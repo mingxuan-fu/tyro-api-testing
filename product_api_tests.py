@@ -12,10 +12,12 @@ from jsonschema import ValidationError, validate
 API_VER = 3
 URL = "https://public.cdr.tyro.com/cds-au/v1/banking/products"
 BUSINESS_LOAN_ID = "b5ee1091-e3af-4517-8f8f-8cc52434472b"
+OPENAPI_DOC_FILENAME = 'openapi.json'
 
 pp = pprint.PrettyPrinter()
 
-with open('openapi.json', 'r', encoding='utf-8') as schema_file:
+# Load schemas from documentation file
+with open(OPENAPI_DOC_FILENAME, 'r', encoding='utf-8') as schema_file:
     schema = jsonref.loads(schema_file.read())['components']['schemas']
 
 header_params = {"x-v": str(API_VER)}
