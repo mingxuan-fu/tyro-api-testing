@@ -2,7 +2,7 @@
 
 This Python script performs minor testing of the Tyro Banking API, specifically the product API. 
 
-Python's in-built unit testing framework is chosen for this task. Though this is not strictly unit testing, the Python unit testing framework is a light and simple to use testing framework, and is easily extendable by adding more test cases. This is paired with the 'requests' library, which allows for easy http calls through python, making the code less comoplex.
+Python's in-built unit testing framework is chosen for this task. Though this is not strictly unit testing, the Python unit testing framework is a light and simple to use testing framework, and is easily extendable by adding more test cases. This is paired with the 'requests' library, which allows for easy HTTP calls through python, making the code less complex.
 ## Pre-requisites
 
 * This script does not have access to the server code and relies on public interfaces, thus the API must be online and accessible through the internet.
