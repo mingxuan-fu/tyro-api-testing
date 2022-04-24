@@ -19,10 +19,18 @@ Python's in-built unit testing framework is chosen for this task. Though this is
 
 ## Addtional Scenarios
 
-Both API end point used should return status 400 if any of the following condition is met
+Both API end point used should return status 400 if any of the following condition is met:
 
 * the header is missing
 
 * the header contains non-numeric 'x-v' version
 
 * the header contains a 'x-v' version less than 1
+
+For the product detail API in particular, it would return status 400 if the following conditon is met:
+
+* the ProductID is not a UUID string (e.g. 'None')
+
+## Other
+
+openapi.json file sourced from https://docs.api.tyro.com/cdr/

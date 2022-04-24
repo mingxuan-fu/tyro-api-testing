@@ -3,15 +3,20 @@ TYRO Product API test cases
 Author: Mingxuan Fu
 """
 
+import jsonschema
 import requests as req
-import json, pprint, unittest
+import json, pprint, unittest, jsonref
+from jsonschema import ValidationError, validate
 
 # set consts
-API_VER = 1
+API_VER = 3
 URL = "https://public.cdr.tyro.com/cds-au/v1/banking/products"
 BUSINESS_LOAN_ID = "b5ee1091-e3af-4517-8f8f-8cc52434472b"
 
 pp = pprint.PrettyPrinter()
+
+with open('openapi.json', 'r', encoding='utf-8') as schema_file:
+    schema = jsonref.loads(schema_file.read())['components']['schemas']
 
 header_params = {"x-v": str(API_VER)}
 invalid_header_params = {"x-v": str(-1)}
@@ -27,6 +32,13 @@ class TestProductApi(unittest.TestCase):
         r = req.get(URL, headers=header_params)
 
         self.assertEqual(r.status_code, 200)
+        content = json.loads(r.text)
+
+        # validate schema of returned body
+        try:
+            jsonschema.validate(content, schema['ResponseBankingProductListV3'])
+        except ValidationError:
+            self.fail("schema validation failed")
 
         # Get term deposit products
         products = json.loads(r.text)['data']['products']
@@ -40,25 +52,37 @@ class TestProductApi(unittest.TestCase):
         r = req.get(f'{URL}/{BUSINESS_LOAN_ID}', headers=header_params)
 
         self.assertEqual(r.status_code, 200)
+        content = json.loads(r.text)
+
+        # validate schema of returned body
+        try:
+            jsonschema.validate(content, schema['ResponseBankingProductByIdV3'])
+        except ValidationError:
+            self.fail("schema validation failed")
 
         # Get Business loan eligibility
-        data = json.loads(r.text)['data']
-        eligibility = data['eligibility']
+        eligibility = content['data']['eligibility']
         
         # Print eligibility to terminal
         print('\neligibility of business loan\n')
         pp.pprint(eligibility)
 
     def test_get_products_invalid_headers(self):
-        r = req.get(f'{URL}/{BUSINESS_LOAN_ID}', headers=invalid_header_params)
+        r = req.get(URL, headers=invalid_header_params)
 
-        # invalid header should result in status 400
+        # invalid headers should result in status 400
         self.assertEqual(r.status_code, 400)
     
     def test_get_product_detail_missing_headers(self):
-        r = req.get(URL, headers={})
+        r = req.get(f'{URL}/{BUSINESS_LOAN_ID}', headers={})
 
-        # missing header x-v value should result in status 400
+        # missing headers x-v value should result in status 400
+        self.assertEqual(r.status_code, 400)
+
+    def test_get_product_detail_null_productid(self):
+        r = req.get(f'{URL}/NULL', headers=header_params)
+
+        # 400 should be returned if productid is not a uuid string
         self.assertEqual(r.status_code, 400)
 
 if __name__ == '__main__':
