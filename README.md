@@ -1,4 +1,4 @@
-# TYRO PAYMENT Product API Testing
+# TYRO Product API Testing
 
 This Python script performs minor testing of the Tyro Banking API, specifically the product API. 
 
