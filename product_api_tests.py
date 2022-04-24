@@ -50,7 +50,7 @@ class TestProductApi(unittest.TestCase):
         pp.pprint(eligibility)
 
     def test_get_products_invalid_headers(self):
-        r = req.get(f'{URL}/{BUSINESS_LOAN_ID}', headers=bad_header_params)
+        r = req.get(f'{URL}/{BUSINESS_LOAN_ID}', headers=invalid_header_params)
 
         # invalid header should result in status 400
         self.assertEqual(r.status_code, 400)
