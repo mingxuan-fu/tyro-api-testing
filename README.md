@@ -11,7 +11,14 @@ Python's in-built unit testing framework is chosen for this task. Though this is
 
 * The required libraries as specified in requirement.txt must be installed.
 
-* Python must be installed.
+* Python (3.6+) must be installed.
+
+## Installation
+
+1. Install Python 3.6+
+2. (Optional) Create & Activate Virtual Environment
+3. Execute `pip install -r requirements.txt`
+4. Execute `Python product_api_tests.py`
 
 ## Assumptions
 
